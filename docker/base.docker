@@ -1,0 +1,30 @@
+ARG PYTHON_MAJOR_VERSION=3.11
+
+# Use the official Python 3.11 image as the base image
+FROM python:${PYTHON_MAJOR_VERSION}-slim
+
+ARG POETRY_PACKAGE_VERSION=1.6.1
+
+# install base libraries
+RUN apt-get update && \
+    apt-get install -y gcc python3-dev
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the poetry.lock file and other applications to the working directory
+COPY pyproject.toml .
+COPY poetry.lock .
+
+# Install poetry
+RUN pip install --upgrade pip && \
+    pip install poetry==${POETRY_PACKAGE_VERSION} && \
+    poetry install -E server
+
+# copy application
+COPY ml_template ml_template
+COPY server server
+
+
+
+

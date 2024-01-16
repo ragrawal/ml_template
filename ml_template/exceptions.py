@@ -1,0 +1,2 @@
+class SubOptimalModelException(Exception):
+    pass
